@@ -51,28 +51,6 @@ class MainController implements ControllerProviderInterface
           ->convert('branch', 'escaper.argument:escape')
           ->bind('stats');
 
-        $route->get('{repo}/{branch}/rss/', function($repo, $branch) use ($app) {
-            $repository = $app['git']->getRepositoryFromName($app['git.repos'], $repo);
-
-            if ($branch === null) {
-                $branch = $repository->getHead();
-            }
-
-            $commits = $repository->getPaginatedCommits($branch);
-
-            $html = $app['twig']->render('rss.twig', array(
-                'repo'           => $repo,
-                'branch'         => $branch,
-                'commits'        => $commits,
-            ));
-
-            return new Response($html, 200, array('Content-Type' => 'application/rss+xml'));
-        })->assert('repo', $app['util.routing']->getRepositoryRegex())
-          ->assert('branch', $app['util.routing']->getBranchRegex())
-          ->value('branch', null)
-          ->convert('branch', 'escaper.argument:escape')
-          ->bind('rss');
-
         return $route;
     }
 }

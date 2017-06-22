@@ -152,28 +152,22 @@ class InterfaceTest extends WebTestCase
 
         $this->assertCount(1, $crawler->filter('div.repository-header a:contains("detached-head")'));
         $this->assertEquals('/detached-head/', $crawler->filter('.repository-header a')->eq(0)->attr('href'));
-        $this->assertEquals('/detached-head/master/rss/', $crawler->filter('.repository-header a')->eq(1)->attr('href'));
 
         $this->assertCount(1, $crawler->filter('div.repository-header a:contains("develop")'));
         $this->assertEquals('/develop/', $crawler->filter('.repository-header a')->eq(2)->attr('href'));
-        $this->assertEquals('/develop/master/rss/', $crawler->filter('.repository-header a')->eq(3)->attr('href'));
 
         $this->assertCount(1, $crawler->filter('div.repository-header:contains("foobar")'));
         $this->assertCount(1, $crawler->filter('div.repository-body:contains("This is a test repo!")'));
         $this->assertEquals('/foobar/', $crawler->filter('.repository-header a')->eq(4)->attr('href'));
-        $this->assertEquals('/foobar/master/rss/', $crawler->filter('.repository-header a')->eq(5)->attr('href'));
 
         $this->assertCount(1, $crawler->filter('div.repository-header a:contains("GitTest")'));
         $this->assertEquals('/GitTest/', $crawler->filter('.repository-header a')->eq(6)->attr('href'));
-        $this->assertEquals('/GitTest/master/rss/', $crawler->filter('.repository-header a')->eq(7)->attr('href'));
 
         $this->assertCount(1, $crawler->filter('div.repository-header a:contains("mailmap")'));
         $this->assertEquals('/mailmap/', $crawler->filter('.repository-header a')->eq(8)->attr('href'));
-        $this->assertEquals('/mailmap/master/rss/', $crawler->filter('.repository-header a')->eq(9)->attr('href'));
 
         $this->assertCount(1, $crawler->filter('div.repository-header a:contains("nested/NestedRepo")'));
         $this->assertEquals('/nested/NestedRepo/', $crawler->filter('.repository-header a')->eq(10)->attr('href'));
-        $this->assertEquals('/nested/NestedRepo/master/rss/', $crawler->filter('.repository-header a')->eq(11)->attr('href'));
         $this->assertCount(1, $crawler->filter('div.repository-body:contains("This is a NESTED test repo!")'));
     }
 
@@ -324,21 +318,6 @@ class InterfaceTest extends WebTestCase
         $crawler = $client->request('GET', '/mailmap/stats');
         $this->assertTrue($client->getResponse()->isOk());
         $this->assertRegexp('/Anakin Skywalker: 1 commits/', $crawler->filter('.table tbody')->eq(0)->text());
-    }
-
-    /**
-     * @covers GitList\Controller\MainController::connect
-     */
-    public function testRssPage()
-    {
-        $client = $this->createClient();
-
-        $client->request('GET', '/GitTest/master/rss/');
-        $response = $client->getResponse();
-
-        $this->assertTrue($response->isOk());
-        $this->assertRegexp('/Latest commits in GitTest:master/', $client->getResponse()->getContent());
-        $this->assertRegexp('/Initial commit/', $client->getResponse()->getContent());
     }
 
     /**
