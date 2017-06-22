@@ -1,0 +1,37 @@
+{
+  "name": "GitViewer",
+  "author": "Chunliang Lyu",
+  "url": "https://github.com/cllu/MediaWiki-GitViewer",
+  "description": "View git repositories",
+  "version": "1.0",
+  "license-name": "BSD-2-Clause",
+  "type": "other",
+  "manifest_version": 1,
+  "Hooks": {
+    "BeforeInitialize": [
+      "GitViewer::onBeforeInitialize"
+    ]
+  },
+  "load_composer_autoloader": true,
+  "AutoloadClasses": {
+    "GitViewer": "GitViewer.php"
+  },
+  "ResourceModules": {
+    "ext.GitViewer": {
+      "scripts": [
+        "resources/scripts/codemirror.js",
+        "resources/scripts/draw.js",
+        "resources/scripts/gitgraph.js",
+        "resources/scripts/main.js",
+        "resources/scripts/networkGraph.js",
+        "resources/scripts/raphael.js",
+        "resources/scripts/showdown.js",
+        "resources/scripts/table.js"
+      ],
+      "styles": [
+        "resources/less/style.less",
+        "resources/styles/gitgraph.css"
+      ]
+    }
+  }
+}

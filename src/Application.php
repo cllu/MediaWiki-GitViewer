@@ -32,7 +32,6 @@ class Application extends SilexApplication
 
         $this['debug'] = $config->get('app', 'debug');
         $this['date.format'] = $config->get('date', 'format') ? $config->get('date', 'format') : 'd/m/Y H:i:s';
-        $this['theme'] = $config->get('app', 'theme') ? $config->get('app', 'theme') : 'default';
         $this['title'] = $config->get('app', 'title') ? $config->get('app', 'title') : 'GitList';
         $this['filetypes'] = $config->getSection('filetypes');
         $this['binary_filetypes'] = $config->getSection('binary_filetypes');
@@ -48,7 +47,7 @@ class Application extends SilexApplication
 
         // Register services
         $this->register(new TwigServiceProvider(), array(
-            'twig.path'       => array($this->getThemePath($this['theme']), $this->getThemePath('default')),
+            'twig.path'       => array($this->path . '/resources/twig/'),
             'twig.options'    => $config->get('app', 'cache') ?
                                  array('cache' => $this->getCachePath() . 'views') : array(),
         ));
@@ -148,18 +147,6 @@ class Application extends SilexApplication
         return $this->path
             . DIRECTORY_SEPARATOR
             . 'cache'
-            . DIRECTORY_SEPARATOR;
-    }
-
-    public function getThemePath($theme)
-    {
-        return $this->path
-            . DIRECTORY_SEPARATOR
-            . 'themes'
-            . DIRECTORY_SEPARATOR
-            . $theme
-            . DIRECTORY_SEPARATOR
-            . 'twig'
             . DIRECTORY_SEPARATOR;
     }
 
