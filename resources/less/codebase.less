@@ -1,0 +1,117 @@
+.codebase {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 14px;
+  line-height: 1.5;
+  color: #24292e;
+  background-color: #fff;
+
+  .commit-tease {
+    position: relative;
+    padding: 10px;
+    margin-bottom: -1px;
+    font-size: 13px;
+    line-height: 20px;
+    color: #586069;
+    background-color: #f1f8ff;
+    border: 1px solid #c8e1ff;
+    border-radius: 3px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+  .float-right {
+    float: right !important;
+  }
+  .commit-author-section {
+    color: #24292e;
+  }
+  .commit-tease .avatar {
+    margin-top: -1px;
+  }
+  .avatar {
+    display: inline-block;
+    overflow: hidden;
+    line-height: 1;
+    vertical-align: middle;
+    border-radius: 3px;
+  }
+  .user-mention,
+  .team-mention {
+    font-weight: 600;
+    color: #24292e;
+    white-space: nowrap;
+  }
+  strong {
+    font-weight: 600;
+  }
+  a {
+    color: #0366d6;
+    text-decoration: none;
+  }
+  .commit-tease .message {
+    color: inherit;
+  }
+  table {
+    border-spacing: 0;
+    border-collapse: collapse;
+  }
+  table.files {
+    width: 100%;
+    background: #fff;
+    border-radius: 2px;
+    td {
+      padding: 6px 3px;
+      line-height: 20px;
+      border-top: 1px solid #eaecef;
+    }
+    td.icon {
+      width: 17px;
+      padding-right: 2px;
+      padding-left: 10px;
+      color: rgba(3, 47, 98, 0.55);
+    }
+    td.content {
+      max-width: 180px;
+    }
+    td.message {
+      max-width: 442px;
+      padding-left: 10px;
+      overflow: hidden;
+      color: #6a737d;
+      a {
+        color: #6a737d;
+      }
+    }
+    td.age {
+      width: 125px;
+      padding-right: 10px;
+      color: #6a737d;
+      text-align: right;
+      white-space: nowrap;
+    }
+    td.icon .octicon-file-directory {
+      color: rgba(3, 47, 98, 0.5);
+    }
+    td .css-truncate {
+      max-width: 100%;
+    }
+  }
+  .css-truncate.css-truncate-target,
+  .css-truncate .css-truncate-target {
+    display: inline-block;
+    max-width: 125px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: top;
+  }
+  img {
+    border-style: none;
+  }
+  .file-wrap {
+    margin-bottom: 10px;
+    border: 1px solid #dfe2e5;
+    border-top: 0;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+  }
+}

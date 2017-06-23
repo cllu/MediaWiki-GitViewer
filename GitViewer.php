@@ -2,10 +2,6 @@
 
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
-function substr_startswith($haystack, $needle) {
-    return substr($haystack, 0, strlen($needle)) === $needle;
-}
-
 /**
  * Class GitViewerPage
  *
@@ -41,9 +37,10 @@ class GitViewerPage extends ErrorPageError {
         $request = SymfonyRequest::create($this->url);
         $response = $this->gitViewer->handle($request);
 
+        $wgOut->addModules('ext.GitViewer');
         $wgOut->addHeadItem('FontAwesome', '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />');
         $wgOut->addHeadItem('Bootstrap', '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.0/css/bootstrap.min.css" />');
-        $wgOut->setPageTitle("Git");
+        $wgOut->setPageTitle("GitViewer");
         $wgOut->addHTML($response->getContent());
         $wgOut->output();
     }
@@ -55,10 +52,8 @@ class GitViewer {
      */
     public static function onBeforeInitialize(&$title, &$article, &$output, &$user, $request, $mediaWiki) {
         $url = $request->getRequestURL();
-        //print_r($request->detectServer());
-        $host = $_SERVER['HTTP_HOST'];
-        if (strtolower(substr($host, 0, 4)) === "git.") {
-            throw new GitViewerPage($url);
+        if ((substr($url, 0, 2)) === "/+") {
+            throw new GitViewerPage("/" . substr($url, 2));
         }
         return true;
     }

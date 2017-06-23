@@ -22,16 +22,22 @@
         "resources/scripts/codemirror.js",
         "resources/scripts/draw.js",
         "resources/scripts/gitgraph.js",
-        "resources/scripts/main.js",
         "resources/scripts/networkGraph.js",
+        "resources/scripts/eve.js",
         "resources/scripts/raphael.js",
         "resources/scripts/showdown.js",
-        "resources/scripts/table.js"
+        "resources/scripts/table.js",
+        "resources/scripts/bootstrap.js",
+        "resources/scripts/main.js"
       ],
       "styles": [
         "resources/less/style.less",
         "resources/styles/gitgraph.css"
       ]
     }
+  },
+  "ResourceFileModulePaths": {
+    "localBasePath": "",
+    "remoteExtPath": "GitViewer"
   }
 }

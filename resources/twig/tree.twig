@@ -2,8 +2,6 @@
 
 {% set page = 'files' %}
 
-{% block title %}GitList{% endblock %}
-
 {% block content %}
     {% embed 'breadcrumb.twig' with {breadcrumbs: breadcrumbs} %}
         {% block extra %}
@@ -39,6 +37,66 @@
             {% endif %}
         {% endblock %}
     {% endembed %}
+
+  <div class="commit-tease">
+    <span class="float-right">
+      Latest commit
+      <a class="commit-tease-sha" href="/cllu/Semantic-Resume/commit/5682ae9b415f5e7291fd14524ed921fa12857a45">
+        5682ae9
+      </a>
+      <span itemprop="dateModified"><relative-time datetime="2015-12-31T04:54:08Z" title="2015 M12 30 20:54 GMT-8">on Dec 30 2015</relative-time></span>
+    </span>
+
+    <span class="commit-author-section">
+      <img class="avatar" height="20" src="https://avatars3.githubusercontent.com/u/677398?v=3&amp;s=40" width="20">
+      <a href="/cllu" class="user-mention">cllu</a>
+    </span>
+    <a href="/cllu/Semantic-Resume/commit/5682ae9b415f5e7291fd14524ed921fa12857a45" class="message" title="Display telephone in header">Display telephone in header</a>
+  </div>
+  <div class="file-wrap">
+
+    <table class="files">
+      <tbody>
+        <tr>
+          <td class="icon">
+            <svg aria-hidden="true" class="octicon octicon-file-directory" height="16" version="1.1" viewBox="0 0 14 16" width="14">
+              <path fill-rule="evenodd" d="M13 4H7V3c0-.66-.31-1-1-1H1c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1V5c0-.55-.45-1-1-1zM6 4H1V3h5v1z"></path>
+            </svg>
+          </td>
+          <td class="content">
+            <span class="css-truncate css-truncate-target"><a href="/cllu/Semantic-Resume/tree/master/app" title="app">app</a></span>
+          </td>
+          <td class="message">
+            <span class="css-truncate css-truncate-target">
+                  <a href="/cllu/Semantic-Resume/commit/5682ae9b415f5e7291fd14524ed921fa12857a45" class="message" data-pjax="true" title="Display telephone in header">Display telephone in header</a>
+            </span>
+          </td>
+          <td class="age">
+            <span class="css-truncate css-truncate-target"><time-ago datetime="2015-12-31T04:54:08Z" title="2015 M12 30 20:54 GMT-8">2 years ago</time-ago></span>
+          </td>
+        </tr>
+        <tr class="navigation-focus">
+          <td class="icon">
+            <svg aria-hidden="true" class="octicon octicon-file-text" height="16" version="1.1" viewBox="0 0 12 16" width="12">
+              <path d="M6 5H2V4h4v1zM2 8h7V7H2v1zm0 2h7V9H2v1zm0 2h7v-1H2v1zm10-7.5V14c0 .55-.45 1-1 1H1c-.55 0-1-.45-1-1V2c0-.55.45-1 1-1h7.5L12 4.5zM11 5L8 2H1v12h10V5z"></path>
+            </svg>
+          </td>
+          <td class="content">
+            <span class="css-truncate css-truncate-target"><a href="/cllu/Semantic-Resume/blob/master/package.json" title="package.json">package.json</a></span>
+          </td>
+          <td class="message">
+            <span class="css-truncate css-truncate-target">
+                  <a href="/cllu/Semantic-Resume/commit/9caa94cf7e3cad24019098d9378190340e07fd18" class="message" data-pjax="true" title="Refactor gulp tasks">Refactor gulp tasks</a>
+            </span>
+          </td>
+          <td class="age">
+            <span class="css-truncate css-truncate-target"><time-ago datetime="2015-12-18T08:20:31Z" title="2015 M12 18 00:20 GMT-8">2 years ago</time-ago></span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
 
     {% if files is not empty %}
     <table class="table tree">
