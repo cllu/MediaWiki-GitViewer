@@ -3,40 +3,23 @@
 {% set page = 'files' %}
 
 {% block content %}
-    {% embed 'breadcrumb.twig' with {breadcrumbs: breadcrumbs} %}
-        {% block extra %}
-            <div class="pull-right">
-                <div class="btn-group download-buttons">
-                    {% if app.show_http_remote or app.show_ssh_remote %}
-                    <a type="button" href="#" class="btn btn-default btn-xs" title="Show remotes to clone this repository." id="clone-button-show">Clone</a>
-                    {% endif %}
-                    <a type="button" href="{{ path('archive', {repo: repo, branch: branch, format: 'zip'}) }}" class="btn btn-default btn-xs" title="Download '{{ branch }}' as a ZIP archive">ZIP</a>
-                    <a type="button" href="{{ path('archive', {repo: repo, branch: branch, format: 'tar'}) }}" class="btn btn-default btn-xs" title="Download '{{ branch }}' as a TAR archive">TAR</a>
-                </div>
-            </div>
-            {% if app.show_http_remote or app.show_ssh_remote %}
-            <div id="clone-popup">
-                <div id="clone-popup-inner-wrapper">
-                    <a class="close" href="#" id="clone-button-hide">&times;</a>
-                    <div class="btn-group">
-                        {% if app.show_ssh_remote %}
-                        <button type="button" class="btn btn-default{{ app.show_ssh_remote and app.show_http_remote ? ' active' }}" id="clone-button-ssh">SSH</button>
-                        {% endif %}
-                        {% if app.show_http_remote %}
-                        <button type="button" class="btn btn-default" id="clone-button-http">HTTPS</button>
-                        {% endif %}
-                    </div><br />
-                    {% if app.show_ssh_remote %}
-                    <input type="text" class="form-control{{ app.show_ssh_remote ? ' visible' }}" id="clone-input-ssh" value="git clone {{ app.ssh_user }}@{{ app.request.host }}:{{ repo }}">
-                    {% endif %}
-                    {% if app.show_http_remote %}
-                    <input type="text" class="form-control{{ app.show_ssh_remote is empty and app.show_http_remote ? ' visible' }}" id="clone-input-http" value="git clone http{{ app.use_https ? 's' }}://{{ app.http_user }}{{ app.http_user ? '@' }}{{ app.request.host }}/{{ app.url_subdir }}{{ repo }}">
-                    {% endif %}
-                </div>
-            </div>
-            {% endif %}
-        {% endblock %}
-    {% endembed %}
+
+<div class="breadcrumb">
+  <span class="repo-root">
+    <a href="{{ path('tree', {repo: repo, commitishPath: branch}) }}">{{ repo }}</a>
+  </span>
+    {% for breadcrumb in breadcrumbs %}
+        <span class="separator">/</span>
+        <span{% if loop.last %} class="final-path"{% endif %}>
+          {% if not loop.last %}
+              <a href="{{ path('tree', {repo: repo, commitishPath: branch ~ '/' ~ breadcrumb.path}) }}">{{ breadcrumb.dir }}</a>
+          {% endif %}
+          {% if loop.last %}{{ breadcrumb.dir }}{% endif %}
+        </span>
+    {% endfor %}
+  <span class="separator">/</span>
+</div>
+<div style="clear:both"></div>
 
   <div class="commit-tease">
     <span class="float-right">
@@ -53,63 +36,14 @@
     </span>
     <a href="/cllu/Semantic-Resume/commit/5682ae9b415f5e7291fd14524ed921fa12857a45" class="message" title="Display telephone in header">Display telephone in header</a>
   </div>
-  <div class="file-wrap">
-
-    <table class="files">
-      <tbody>
-        <tr>
-          <td class="icon">
-            <svg aria-hidden="true" class="octicon octicon-file-directory" height="16" version="1.1" viewBox="0 0 14 16" width="14">
-              <path fill-rule="evenodd" d="M13 4H7V3c0-.66-.31-1-1-1H1c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1V5c0-.55-.45-1-1-1zM6 4H1V3h5v1z"></path>
-            </svg>
-          </td>
-          <td class="content">
-            <span class="css-truncate css-truncate-target"><a href="/cllu/Semantic-Resume/tree/master/app" title="app">app</a></span>
-          </td>
-          <td class="message">
-            <span class="css-truncate css-truncate-target">
-                  <a href="/cllu/Semantic-Resume/commit/5682ae9b415f5e7291fd14524ed921fa12857a45" class="message" data-pjax="true" title="Display telephone in header">Display telephone in header</a>
-            </span>
-          </td>
-          <td class="age">
-            <span class="css-truncate css-truncate-target"><time-ago datetime="2015-12-31T04:54:08Z" title="2015 M12 30 20:54 GMT-8">2 years ago</time-ago></span>
-          </td>
-        </tr>
-        <tr class="navigation-focus">
-          <td class="icon">
-            <svg aria-hidden="true" class="octicon octicon-file-text" height="16" version="1.1" viewBox="0 0 12 16" width="12">
-              <path d="M6 5H2V4h4v1zM2 8h7V7H2v1zm0 2h7V9H2v1zm0 2h7v-1H2v1zm10-7.5V14c0 .55-.45 1-1 1H1c-.55 0-1-.45-1-1V2c0-.55.45-1 1-1h7.5L12 4.5zM11 5L8 2H1v12h10V5z"></path>
-            </svg>
-          </td>
-          <td class="content">
-            <span class="css-truncate css-truncate-target"><a href="/cllu/Semantic-Resume/blob/master/package.json" title="package.json">package.json</a></span>
-          </td>
-          <td class="message">
-            <span class="css-truncate css-truncate-target">
-                  <a href="/cllu/Semantic-Resume/commit/9caa94cf7e3cad24019098d9378190340e07fd18" class="message" data-pjax="true" title="Refactor gulp tasks">Refactor gulp tasks</a>
-            </span>
-          </td>
-          <td class="age">
-            <span class="css-truncate css-truncate-target"><time-ago datetime="2015-12-18T08:20:31Z" title="2015 M12 18 00:20 GMT-8">2 years ago</time-ago></span>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-  </div>
 
     {% if files is not empty %}
-    <table class="table tree">
-        <thead>
-            <tr>
-                <th width="80%">Name</th>
-                <th width="10%">Mode</th>
-                <th width="10%">Size</th>
-            </tr>
-        </thead>
-        <tbody>
+  <div class="file-wrap">
+    <table class="files">
             {% if parent is not null %}
-            <tr>
+            <tbody>
+            <tr class="up-tree">
+                <td></td>
                 <td>
                     {% if not parent %}
                         <a href="{{ path('branch', {repo: repo, branch: branch}) }}">..</a>
@@ -120,33 +54,58 @@
                 <td></td>
                 <td></td>
             </tr>
+            </tbody>
             {% endif %}
-            {% for file in files %}
-            <tr>
-                <td><span class="fa {{ file.type == "folder" or file.type == "symlink" ? "fa-folder-open" : "fa-file-text-o" }}"></span> <a href="
+      <tbody>
+      {% for file in files %}
+        <tr>
+          <td class="icon">
+            {% if file.type == "folder" or file.type == "symlink" %}
+            <svg aria-hidden="true" class="octicon octicon-file-directory" height="16" version="1.1" viewBox="0 0 14 16" width="14">
+              <path fill-rule="evenodd" d="M13 4H7V3c0-.66-.31-1-1-1H1c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1V5c0-.55-.45-1-1-1zM6 4H1V3h5v1z"></path>
+            </svg>
+            {% else %}
+            <svg aria-hidden="true" class="octicon octicon-file-text" height="16" version="1.1" viewBox="0 0 12 16" width="12">
+              <path d="M6 5H2V4h4v1zM2 8h7V7H2v1zm0 2h7V9H2v1zm0 2h7v-1H2v1zm10-7.5V14c0 .55-.45 1-1 1H1c-.55 0-1-.45-1-1V2c0-.55.45-1 1-1h7.5L12 4.5zM11 5L8 2H1v12h10V5z"></path>
+            </svg>
+            {% endif %}
+          </td>
+          <td class="content">
+            <span class="css-truncate css-truncate-target"><a href="
                     {%- if file.type == "folder" or file.type == "symlink" -%}
                         {{ path('tree', {repo: repo, commitishPath: branch ~ '/' ~ path ~ (file.type == "symlink" ? file.path : file.name)}) }}
                     {%- else -%}
                         {{ path('blob', {repo: repo, commitishPath: branch ~ '/' ~ path ~ (file.type == "symlink" ? file.path : file.name)}) }}
                     {%- endif -%}
-                ">{{ file.name }}</a></td>
-                <td>{{ file.mode }}</td>
-                <td>{% if file.size %}{{ (file.size / 1024) | number_format }} kb{% endif %}</td>
-            </tr>
+            " title="{{ file.name }}">{{ file.name }}</a></span>
+          </td>
+          <td class="message">
+            <span class="css-truncate css-truncate-target">
+                  <a href="/cllu/Semantic-Resume/commit/5682ae9b415f5e7291fd14524ed921fa12857a45" class="message" data-pjax="true" title="Display telephone in header">{{ file.mode }}</a>
+            </span>
+          </td>
+          <td class="age">
+            <span class="css-truncate css-truncate-target"><time-ago datetime="2015-12-31T04:54:08Z" title="2015 M12 30 20:54 GMT-8">{% if file.size %}{{ (file.size / 1024) | number_format }} kb{% endif %}</time-ago></span>
+          </td>
+        </tr>
+
             {% endfor %}
-        </tbody>
+      </tbody>
     </table>
+
+  </div>
     {% else %}
         <p>This repository is empty.</p>
     {% endif %}
+
     {% if readme is defined and readme is not empty %}
-        <div class="readme-view">
-            <div class="md-header">
-                <span class="meta">{{ readme.filename }}</span>
-            </div>
-            <div id="md-content">{{ readme.content }}</div>
+        <div class="readme boxed-group">
+            <h3>
+            <svg aria-hidden="true" class="octicon octicon-book" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M3 5h4v1H3V5zm0 3h4V7H3v1zm0 2h4V9H3v1zm11-5h-4v1h4V5zm0 2h-4v1h4V7zm0 2h-4v1h4V9zm2-6v9c0 .55-.45 1-1 1H9.5l-1 1-1-1H2c-.55 0-1-.45-1-1V3c0-.55.45-1 1-1h5.5l1 1 1-1H15c.55 0 1 .45 1 1zm-8 .5L7.5 3H2v9h6V3.5zm7-.5H9.5l-.5.5V12h6V3z"></path></svg>
+                {{ readme.filename }}
+            </h3>
+            <article>{{ readme.content }}</article>
         </div>
     {% endif %}
 
-    <hr />
 {% endblock %}

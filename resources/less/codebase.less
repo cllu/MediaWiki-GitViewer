@@ -5,6 +5,24 @@
   color: #24292e;
   background-color: #fff;
 
+  .breadcrumb {
+    float: left;
+    margin-top: 0;
+    margin-left: 5px;
+    font-size: 16px;
+    line-height: 26px;
+    margin-bottom: 10px;
+    color: #586069;
+    background: none;
+    padding: 0;
+    .repo-root {
+      font-weight: 600;
+    }
+    strong.final-path {
+      color: #24292e;
+    }
+  }
+
   .commit-tease {
     position: relative;
     padding: 10px;
@@ -58,6 +76,19 @@
     width: 100%;
     background: #fff;
     border-radius: 2px;
+    tr.up-tree {
+      border-top: 1px solid #eaecef;
+      border-bottom: 1px solid #eaecef;
+      a {
+        padding: 3px 6px;
+        margin-left: -3px;
+        font-weight: 600;
+        border-radius: 2px;
+        &:hover {
+          background-color: #dfe2e5;
+        }
+      }
+    }
     td {
       padding: 6px 3px;
       line-height: 20px;
@@ -113,5 +144,33 @@
     border-top: 0;
     border-bottom-right-radius: 3px;
     border-bottom-left-radius: 3px;
+  }
+
+  .boxed-group {
+    position: relative;
+    margin-bottom: 30px;
+    border-radius: 3px;
+    h3 {
+      display: block;
+      padding: 9px 10px 10px;
+      margin: 0;
+      font-size: 14px;
+      line-height: 17px;
+      background-color: #f6f8fa;
+      border: 1px solid rgba(27,31,35,0.15);
+      border-bottom: 0;
+      border-radius: 3px 3px 0 0;
+    }
+  }
+
+  .readme {
+    article {
+      padding: 45px;
+      word-wrap: break-word;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-bottom-right-radius: 3px;
+      border-bottom-left-radius: 3px;
+    }
   }
 }
