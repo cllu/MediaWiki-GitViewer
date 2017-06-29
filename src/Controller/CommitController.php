@@ -21,7 +21,7 @@ class CommitController implements ControllerProviderInterface
             return $app->handle($subRequest, \Symfony\Component\HttpKernel\HttpKernelInterface::SUB_REQUEST);
         })->assert('repo', $app['util.routing']->getRepositoryRegex());
 
-        $route->get('{repo}/commits/{commitishPath}', function ($repo, $commitishPath) use ($app) {
+        $route->get('{repo}/commits/{commitishPath}', function (Request $request, $repo, $commitishPath) use ($app) {
             $repository = $app['git']->getRepositoryFromName($app['git.repos'], $repo);
 
             if ($commitishPath === null) {
@@ -34,7 +34,7 @@ class CommitController implements ControllerProviderInterface
             list($branch, $file) = $app['util.repository']->extractRef($repository, $branch, $file);
 
             $type = $file ? "$branch -- \"$file\"" : $branch;
-            $pager = $app['util.view']->getPager($app['request']->get('page'), $repository->getTotalCommits($type));
+            $pager = $app['util.view']->getPager($request->get('page'), $repository->getTotalCommits($type));
             $commits = $repository->getPaginatedCommits($type, $pager['current']);
             $categorized = array();
 
@@ -44,7 +44,7 @@ class CommitController implements ControllerProviderInterface
                 $categorized[$date][] = $commit;
             }
 
-            $template = $app['request']->isXmlHttpRequest() ? 'commits_list.twig' : 'commits.twig';
+            $template = $request->isXmlHttpRequest() ? 'commits_list.twig' : 'commits.twig';
 
             return $app['twig']->render($template, array(
                 'page'           => 'commits',

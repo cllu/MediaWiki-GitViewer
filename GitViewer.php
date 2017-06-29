@@ -11,7 +11,7 @@ class GitViewerPage extends ErrorPageError {
     public $url;
     public $gitViewer;
 
-    public function __construct($url, $prefix='') {
+    public function __construct($url, $prefix='/~') {
         $this->url = $url;
 
         $config = GitList\Config::fromFile(__DIR__ . '/config.ini');
@@ -52,8 +52,8 @@ class GitViewer {
      */
     public static function onBeforeInitialize(&$title, &$article, &$output, &$user, $request, $mediaWiki) {
         $url = $request->getRequestURL();
-        if ((substr($url, 0, 2)) === "/~") {
-            throw new GitViewerPage("/" . substr($url, 2));
+        if ((substr($url, 0, 3)) === "/~/") {
+            throw new GitViewerPage($url);
         }
         return true;
     }
