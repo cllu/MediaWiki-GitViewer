@@ -11,18 +11,18 @@ class GitViewerPage extends ErrorPageError {
     public $url;
     public $gitViewer;
 
-    public function __construct($url) {
+    public function __construct($url, $prefix='') {
         $this->url = $url;
 
         $config = GitList\Config::fromFile(__DIR__ . '/config.ini');
         $gitViewer = new GitList\Application($config, __DIR__);
         // Mount the controllers
-        $gitViewer->mount('', new GitList\Controller\MainController());
-        $gitViewer->mount('', new GitList\Controller\BlobController());
-        $gitViewer->mount('', new GitList\Controller\CommitController());
-        $gitViewer->mount('', new GitList\Controller\TreeController());
-        $gitViewer->mount('', new GitList\Controller\NetworkController());
-        $gitViewer->mount('', new GitList\Controller\TreeGraphController());
+        $gitViewer->mount($prefix, new GitList\Controller\MainController());
+        $gitViewer->mount($prefix, new GitList\Controller\BlobController());
+        $gitViewer->mount($prefix, new GitList\Controller\CommitController());
+        $gitViewer->mount($prefix, new GitList\Controller\TreeController());
+        $gitViewer->mount($prefix, new GitList\Controller\NetworkController());
+        $gitViewer->mount($prefix, new GitList\Controller\TreeGraphController());
 
         if (!is_writable(__DIR__ . DIRECTORY_SEPARATOR . 'cache')) {
             die(sprintf('The "%s" folder must be writable for GitList to run.', __DIR__ . DIRECTORY_SEPARATOR . 'cache'));
@@ -52,7 +52,7 @@ class GitViewer {
      */
     public static function onBeforeInitialize(&$title, &$article, &$output, &$user, $request, $mediaWiki) {
         $url = $request->getRequestURL();
-        if ((substr($url, 0, 2)) === "/+") {
+        if ((substr($url, 0, 2)) === "/~") {
             throw new GitViewerPage("/" . substr($url, 2));
         }
         return true;

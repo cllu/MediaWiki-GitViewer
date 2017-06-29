@@ -3,8 +3,9 @@
 namespace GitList\Provider;
 
 use GitList\Util\Repository;
+use Pimple\Container;
 use Silex\Application;
-use Silex\ServiceProviderInterface;
+use Pimple\ServiceProviderInterface;
 
 class RepositoryUtilServiceProvider implements ServiceProviderInterface
 {
@@ -13,11 +14,11 @@ class RepositoryUtilServiceProvider implements ServiceProviderInterface
      *
      * @param Application $app Silex Application
      */
-    public function register(Application $app)
+    public function register(Container $app)
     {
-        $app['util.repository'] = $app->share(function () use ($app) {
+        $app['util.repository'] = function () use ($app) {
             return new Repository($app);
-        });
+        };
     }
 
     public function boot(Application $app)
