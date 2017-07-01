@@ -5,12 +5,10 @@ namespace GitList\Util;
 use Silex\Application;
 use GitList\Exception\EmptyRepositoryException;
 
-class Routing
-{
+class Routing {
     protected $app;
 
-    public function __construct(Application $app)
-    {
+    public function __construct(Application $app) {
         $this->app = $app;
     }
 
@@ -25,8 +23,7 @@ class Routing
      * @param string $repo
      * @return array
      */
-    public function parseCommitishPathParam($commitishPath, $repo)
-    {
+    public function parseCommitishPathParam($commitishPath, $repo) {
         $app = $this->app;
         $repository = $app['git']->getRepositoryFromName($app['git.repos'], $repo);
 
@@ -36,7 +33,8 @@ class Routing
         $slashPosition = strpos($commitishPath, '/');
         if (strlen($commitishPath) >= 40 &&
             ($slashPosition === false ||
-             $slashPosition === 40)) {
+                $slashPosition === 40)
+        ) {
             // We may have a commit hash as our commitish.
             $hash = substr($commitishPath, 0, 40);
             if ($repository->hasCommit($hash)) {
@@ -56,7 +54,8 @@ class Routing
             $matchedBranchLength = 0;
             foreach ($branches as $branch) {
                 if (strpos($commitishPath, $branch) === 0 &&
-                    strlen($branch) > $matchedBranchLength) {
+                    strlen($branch) > $matchedBranchLength
+                ) {
                     $matchedBranch = $branch;
                     $matchedBranchLength = strlen($matchedBranch);
                 }
@@ -85,8 +84,7 @@ class Routing
         return array($commitish, $path);
     }
 
-    public function getBranchRegex()
-    {
+    public function getBranchRegex() {
         static $branchRegex = null;
 
         if ($branchRegex === null) {
@@ -96,8 +94,7 @@ class Routing
         return $branchRegex;
     }
 
-    public function getCommitishPathRegex()
-    {
+    public function getCommitishPathRegex() {
         static $commitishPathRegex = null;
 
         if ($commitishPathRegex === null) {
@@ -107,8 +104,7 @@ class Routing
         return $commitishPathRegex;
     }
 
-    public function getRepositoryRegex()
-    {
+    public function getRepositoryRegex() {
         static $regex = null;
         if ($regex === null) {
             $quotedPaths = array_map(
@@ -128,8 +124,7 @@ class Routing
         return $regex;
     }
 
-    public function isWindows()
-    {
+    public function isWindows() {
         switch (PHP_OS) {
             case 'WIN32':
             case 'WINNT':
@@ -146,8 +141,7 @@ class Routing
      * @param  string $repoPath Full path to the repository
      * @return string Relative path to the repository from git.repositories
      */
-    public function getRelativePath($repoPath)
-    {
+    public function getRelativePath($repoPath) {
         if (strpos($repoPath, $this->app['git.repos']) === 0) {
             $relativePath = substr($repoPath, strlen($this->app['git.repos']));
 

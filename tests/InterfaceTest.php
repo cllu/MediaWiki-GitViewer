@@ -4,19 +4,17 @@ use Silex\WebTestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use GitList\Git\Client;
 
-class InterfaceTest extends WebTestCase
-{
+class InterfaceTest extends WebTestCase {
     protected static $tmpdir;
     protected static $gitPath;
 
-    public static function setUpBeforeClass()
-    {
+    public static function setUpBeforeClass() {
         if (getenv('TMP')) {
             self::$tmpdir = getenv('TMP');
         } elseif (getenv('TMPDIR')) {
             self::$tmpdir = getenv('TMPDIR');
         } else {
-           self::$tmpdir = DIRECTORY_SEPARATOR . 'tmp';
+            self::$tmpdir = DIRECTORY_SEPARATOR . 'tmp';
         }
 
         self::$tmpdir .= DIRECTORY_SEPARATOR . 'gitlist_' . md5(time() . mt_rand()) . DIRECTORY_SEPARATOR;
@@ -62,9 +60,9 @@ class InterfaceTest extends WebTestCase
         $fs->mkdir(self::$tmpdir . 'foobar/myfolder');
         $fs->mkdir(self::$tmpdir . 'foobar/testfolder');
         file_put_contents(self::$tmpdir . 'foobar/myfolder/mytest.php',
-                "<?php\necho 'Hello World'; // This is my test");
+            "<?php\necho 'Hello World'; // This is my test");
         file_put_contents(self::$tmpdir . 'foobar/testfolder/test.php',
-                "<?php\necho 'Hello World'; // This is a test");
+            "<?php\necho 'Hello World'; // This is a test");
         $repository->setConfig('user.name', 'Luke Skywalker');
         $repository->setConfig('user.email', 'luke@rebel.org');
         $repository->addAll();
@@ -126,8 +124,7 @@ class InterfaceTest extends WebTestCase
         $repository->commit("First commit");
     }
 
-    public function createApplication()
-    {
+    public function createApplication() {
         $config = new GitList\Config;
         $config->set('app', 'debug', true);
         $config->set('app', 'debug', false);
@@ -142,8 +139,7 @@ class InterfaceTest extends WebTestCase
     /**
      * @covers GitList\Controller\MainController::connect
      */
-    public function testInitialPage()
-    {
+    public function testInitialPage() {
         $client = $this->createClient();
         $crawler = $client->request('GET', '/');
 
@@ -174,8 +170,7 @@ class InterfaceTest extends WebTestCase
     /**
      * @covers GitList\Controller\TreeController::connect
      */
-    public function testRepositoryPage()
-    {
+    public function testRepositoryPage() {
         $client = $this->createClient();
 
         $crawler = $client->request('GET', '/GitTest/');
@@ -207,8 +202,7 @@ class InterfaceTest extends WebTestCase
     /**
      * @covers GitList\Controller\BlobController::connect
      */
-    public function testBlobPage()
-    {
+    public function testBlobPage() {
         $client = $this->createClient();
 
         $crawler = $client->request('GET', '/GitTest/blob/master/test.php');
@@ -216,18 +210,17 @@ class InterfaceTest extends WebTestCase
         $this->assertTrue($client->getResponse()->isOk());
         $this->assertCount(1, $crawler->filter('.breadcrumb .active:contains("test.php")'));
         $this->assertEquals('/GitTest/raw/master/test.php',
-                $crawler->filter('.source-header .btn-group a')->eq(0)->attr('href'));
+            $crawler->filter('.source-header .btn-group a')->eq(0)->attr('href'));
         $this->assertEquals('/GitTest/blame/master/test.php',
-                $crawler->filter('.source-header .btn-group a')->eq(1)->attr('href'));
+            $crawler->filter('.source-header .btn-group a')->eq(1)->attr('href'));
         $this->assertEquals('/GitTest/commits/master/test.php',
-                $crawler->filter('.source-header .btn-group a')->eq(2)->attr('href'));
+            $crawler->filter('.source-header .btn-group a')->eq(2)->attr('href'));
     }
 
     /**
      * @covers GitList\Controller\BlobController::connect
      */
-    public function testRawPage()
-    {
+    public function testRawPage() {
         $client = $this->createClient();
 
         $crawler = $client->request('GET', '/GitTest/raw/master/test.php');
@@ -238,28 +231,26 @@ class InterfaceTest extends WebTestCase
     /**
      * @covers GitList\Controller\CommitController::connect
      */
-    public function testBlamePage()
-    {
+    public function testBlamePage() {
         $client = $this->createClient();
 
         $crawler = $client->request('GET', '/GitTest/blame/master/test.php');
         $this->assertTrue($client->getResponse()->isOk());
         $this->assertCount(1, $crawler->filter('.source-header .meta:contains("test.php")'));
         $this->assertRegexp('/\/GitTest\/commit\/[a-zA-Z0-9%]+/',
-                $crawler->filter('.blame-view .commit')->eq(0)->filter('a')->attr('href'));
+            $crawler->filter('.blame-view .commit')->eq(0)->filter('a')->attr('href'));
 
         $crawler = $client->request('GET', '/foobar/blame/master/bar.json');
         $this->assertTrue($client->getResponse()->isOk());
         $this->assertCount(1, $crawler->filter('.source-header .meta:contains("bar.json")'));
         $this->assertRegexp('/\/foobar\/commit\/[a-zA-Z0-9%]+/',
-                $crawler->filter('.blame-view .commit')->eq(0)->filter('a')->attr('href'));
+            $crawler->filter('.blame-view .commit')->eq(0)->filter('a')->attr('href'));
     }
 
     /**
      * @covers GitList\Controller\CommitController::connect
      */
-    public function testHistoryPage()
-    {
+    public function testHistoryPage() {
         $client = $this->createClient();
 
         $crawler = $client->request('GET', '/GitTest/commits/master/test.php');
@@ -283,8 +274,7 @@ class InterfaceTest extends WebTestCase
     /**
      * @covers GitList\Controller\CommitController::connect
      */
-    public function testCommitsPage()
-    {
+    public function testCommitsPage() {
         $client = $this->createClient();
 
         $crawler = $client->request('GET', '/GitTest/commits');
@@ -304,8 +294,7 @@ class InterfaceTest extends WebTestCase
     /**
      * @covers GitList\Controller\MainController::connect
      */
-    public function testStatsPage()
-    {
+    public function testStatsPage() {
         $client = $this->createClient();
 
         $crawler = $client->request('GET', '/GitTest/stats');
@@ -323,8 +312,7 @@ class InterfaceTest extends WebTestCase
     /**
      * @covers GitList\Controller\TreeController::connect
      */
-    public function testNestedRepoPage()
-    {
+    public function testNestedRepoPage() {
         $client = $this->createClient();
 
         $client->request('GET', '/nested/NestedRepo/');
@@ -337,8 +325,7 @@ class InterfaceTest extends WebTestCase
     /**
      * @covers GitList\Controller\TreeController::connect
      */
-    public function testDevelopRepo()
-    {
+    public function testDevelopRepo() {
         $client = $this->createClient();
 
         $crawler = $client->request('GET', '/develop/');
@@ -348,8 +335,7 @@ class InterfaceTest extends WebTestCase
     /**
      * @covers GitList\Controller\TreeController::connect
      */
-    public function testNestedRepoBranch()
-    {
+    public function testNestedRepoBranch() {
         $client = $this->createClient();
 
         $crawler = $client->request('GET', '/nested/NestedRepo/testing/');
@@ -357,8 +343,7 @@ class InterfaceTest extends WebTestCase
         $this->assertRegexp('/NESTED TEST BRANCH README/', $client->getResponse()->getContent());
     }
 
-    public static function tearDownAfterClass()
-    {
+    public static function tearDownAfterClass() {
         $fs = new Filesystem();
         $fs->remove(self::$tmpdir);
     }

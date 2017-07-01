@@ -8,16 +8,14 @@ use Gitter\Model\Commit\Diff;
 use Gitter\PrettyFormat;
 use Symfony\Component\Filesystem\Filesystem;
 
-class Repository extends BaseRepository
-{
+class Repository extends BaseRepository {
     /**
      * Return true if the repo contains this commit.
      *
      * @param $commitHash Hash of commit whose existence we want to check
      * @return boolean Whether or not the commit exists in this repo
      */
-    public function hasCommit($commitHash)
-    {
+    public function hasCommit($commitHash) {
         $logs = $this->getClient()->run($this, "show $commitHash");
         $logs = explode("\n", $logs);
 
@@ -27,8 +25,7 @@ class Repository extends BaseRepository
     /**
      * Get the current branch, returning a default value when HEAD is detached.
      */
-    public function getHead()
-    {
+    public function getHead() {
         $client = $this->getClient();
 
         return parent::getHead($client->getDefaultBranch());
@@ -40,17 +37,16 @@ class Repository extends BaseRepository
      * @param  string $commitHash Hash of the specific commit to read data
      * @return array  Commit data
      */
-    public function getCommit($commitHash)
-    {
+    public function getCommit($commitHash) {
         $logs = $this->getClient()->run($this,
-                  "show --pretty=format:\"<item><hash>%H</hash>"
-                . "<short_hash>%h</short_hash><tree>%T</tree><parents>%P</parents>"
-                . "<author>%aN</author><author_email>%aE</author_email>"
-                . "<date>%at</date><commiter>%cN</commiter><commiter_email>%cE</commiter_email>"
-                . "<commiter_date>%ct</commiter_date>"
-                . "<message><![CDATA[%s]]></message>"
-                . "<body><![CDATA[%b]]></body>"
-                . "</item>\" $commitHash"
+            "show --pretty=format:\"<item><hash>%H</hash>"
+            . "<short_hash>%h</short_hash><tree>%T</tree><parents>%P</parents>"
+            . "<author>%aN</author><author_email>%aE</author_email>"
+            . "<date>%at</date><commiter>%cN</commiter><commiter_email>%cE</commiter_email>"
+            . "<commiter_date>%ct</commiter_date>"
+            . "<message><![CDATA[%s]]></message>"
+            . "<body><![CDATA[%b]]></body>"
+            . "</item>\" $commitHash"
         );
 
         $xmlEnd = strpos($logs, '</item>') + 7;
@@ -80,8 +76,7 @@ class Repository extends BaseRepository
      * @param  string $file File that will be blamed
      * @return array  Commits hashes containing the lines
      */
-    public function getBlame($file)
-    {
+    public function getBlame($file) {
         $blame = array();
         $logs = $this->getClient()->run($this, "blame --root -sl $file");
         $logs = explode("\n", $logs);
@@ -118,8 +113,7 @@ class Repository extends BaseRepository
      * @param  array $logs Array of log rows
      * @return array Array of diffs
      */
-    public function readDiffLogs(array $logs)
-    {
+    public function readDiffLogs(array $logs) {
         $diffs = array();
         $lineNumOld = 0;
         $lineNumNew = 0;
@@ -208,18 +202,17 @@ class Repository extends BaseRepository
      * @param int page
      * @return array Commit log
      */
-    public function getPaginatedCommits($file = null, $page = 0)
-    {
+    public function getPaginatedCommits($file = null, $page = 0) {
         $page = 15 * $page;
         $pager = "--skip=$page --max-count=15";
         $command =
-                  "log $pager --pretty=format:\"<item><hash>%H</hash>"
-                . "<short_hash>%h</short_hash><tree>%T</tree><parents>%P</parents>"
-                . "<author>%aN</author><author_email>%aE</author_email>"
-                . "<date>%at</date><commiter>%cN</commiter>"
-                . "<commiter_email>%cE</commiter_email>"
-                . "<commiter_date>%ct</commiter_date>"
-                . "<message><![CDATA[%s]]></message></item>\"";
+            "log $pager --pretty=format:\"<item><hash>%H</hash>"
+            . "<short_hash>%h</short_hash><tree>%T</tree><parents>%P</parents>"
+            . "<author>%aN</author><author_email>%aE</author_email>"
+            . "<date>%at</date><commiter>%cN</commiter>"
+            . "<commiter_email>%cE</commiter_email>"
+            . "<commiter_date>%ct</commiter_date>"
+            . "<message><![CDATA[%s]]></message></item>\"";
 
         if ($file) {
             $command .= " $file";
@@ -240,12 +233,11 @@ class Repository extends BaseRepository
         return $commits;
     }
 
-    public function searchCommitLog($query, $branch)
-    {
+    public function searchCommitLog($query, $branch) {
         $query = escapeshellarg($query);
         $query = strtr($query, array('[' => '\\[', ']' => '\\]'));
         $command =
-              "log --grep={$query} -i --pretty=format:\"<item><hash>%H</hash>"
+            "log --grep={$query} -i --pretty=format:\"<item><hash>%H</hash>"
             . "<short_hash>%h</short_hash><tree>%T</tree><parents>%P</parents>"
             . "<author>%aN</author><author_email>%aE</author_email>"
             . "<date>%at</date><commiter>%cN</commiter>"
@@ -269,9 +261,8 @@ class Repository extends BaseRepository
         return $commits;
     }
 
-    public function searchTree($query, $branch)
-    {
-        if(empty($query)) {
+    public function searchTree($query, $branch) {
+        if (empty($query)) {
             return null;
         }
 
@@ -293,9 +284,9 @@ class Repository extends BaseRepository
             preg_match_all('/([\w-._]+):([^:]+):([0-9]+):(.+)/', $result, $matches, PREG_SET_ORDER);
 
             $data['branch'] = $matches[0][1];
-            $data['file']   = $matches[0][2];
-            $data['line']   = $matches[0][3];
-            $data['match']  = $matches[0][4];
+            $data['file'] = $matches[0][2];
+            $data['line'] = $matches[0][3];
+            $data['match'] = $matches[0][4];
 
             $searchResults[] = $data;
         }
@@ -303,8 +294,7 @@ class Repository extends BaseRepository
         return $searchResults;
     }
 
-    public function getAuthorStatistics($branch)
-    {
+    public function getAuthorStatistics($branch) {
         $logs = $this->getClient()->run($this, 'log --pretty=format:"%aN||%aE" ' . $branch);
 
         if (empty($logs)) {
@@ -323,8 +313,7 @@ class Repository extends BaseRepository
         return $data;
     }
 
-    public function getStatistics($branch)
-    {
+    public function getStatistics($branch) {
         // Calculate amount of files, extensions and file size
         $logs = $this->getClient()->run($this, 'ls-tree -r -l ' . $branch);
         $lines = explode("\n", $logs);
@@ -373,12 +362,11 @@ class Repository extends BaseRepository
     /**
      * Create a TAR or ZIP archive of a git tree
      *
-     * @param string $tree   Tree-ish reference
+     * @param string $tree Tree-ish reference
      * @param string $output Output File name
      * @param string $format Archive format
      */
-    public function createArchive($tree, $output, $format = 'zip')
-    {
+    public function createArchive($tree, $output, $format = 'zip') {
         $fs = new Filesystem;
         $fs->mkdir(dirname($output));
         $this->getClient()->run($this, "archive --format=$format --output='$output' $tree");
@@ -388,14 +376,13 @@ class Repository extends BaseRepository
      * Return true if $path exists in $branch; return false otherwise.
      *
      * @param string $commitish Commitish reference; branch, tag, SHA1, etc.
-     * @param string $path      Path whose existence we want to verify.
+     * @param string $path Path whose existence we want to verify.
      * @return bool
      *
      * GRIPE Arguably belongs in Gitter, as it's generally useful functionality.
      * Also, this really may not be the best way to do this.
      */
-    public function pathExists($commitish, $path)
-    {
+    public function pathExists($commitish, $path) {
         $output = $this->getClient()->run($this, "ls-tree $commitish '$path'");
 
         if (strlen($output) > 0) {

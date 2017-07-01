@@ -2,12 +2,10 @@
 
 namespace GitList;
 
-class Config
-{
+class Config {
     protected $data;
 
-    public static function fromFile($file)
-    {
+    public static function fromFile($file) {
         if (!file_exists($file)) {
             die(sprintf('Please, create the %1$s file.', $file));
         }
@@ -19,13 +17,11 @@ class Config
         return $config;
     }
 
-    public function __construct($data = array())
-    {
+    public function __construct($data = array()) {
         $this->data = $data;
     }
 
-    public function get($section, $option)
-    {
+    public function get($section, $option) {
         if (!array_key_exists($section, $this->data)) {
             return false;
         }
@@ -37,8 +33,7 @@ class Config
         return $this->data[$section][$option];
     }
 
-    public function getSection($section)
-    {
+    public function getSection($section) {
         if (!array_key_exists($section, $this->data)) {
             return false;
         }
@@ -46,13 +41,11 @@ class Config
         return $this->data[$section];
     }
 
-    public function set($section, $option, $value)
-    {
+    public function set($section, $option, $value) {
         $this->data[$section][$option] = $value;
     }
 
-    protected function validateOptions()
-    {
+    protected function validateOptions() {
         $repositories = $this->get('git', 'repositories');
 
         $atLeastOneOk = false;

@@ -14,18 +14,16 @@ use Symfony\Component\Filesystem\Filesystem;
 /**
  * GitList application.
  */
-class Application extends SilexApplication
-{
+class Application extends SilexApplication {
     protected $path;
 
     /**
      * Constructor initialize services.
      *
      * @param Config $config
-     * @param string $root   Base path of the application files (views, cache)
+     * @param string $root Base path of the application files (views, cache)
      */
-    public function __construct(Config $config, $root = null)
-    {
+    public function __construct(Config $config, $root = null) {
         parent::__construct();
         $app = $this;
         $this->path = realpath($root);
@@ -47,24 +45,24 @@ class Application extends SilexApplication
 
         // Register services
         $this->register(new TwigServiceProvider(), array(
-            'twig.path'       => array($this->path . '/resources/twig/'),
-            'twig.options'    => $config->get('app', 'cache') ?
-                                 array('cache' => $this->getCachePath() . 'views') : array(),
+            'twig.path' => array($this->path . '/resources/twig/'),
+            'twig.options' => $config->get('app', 'cache') ?
+                array('cache' => $this->getCachePath() . 'views') : array(),
         ));
 
         $repositories = $config->get('git', 'repositories');
         $this['git.projects'] = $config->get('git', 'project_list') ?
-                                $this->parseProjectList($config->get('git', 'project_list')) :
-                                false;
+            $this->parseProjectList($config->get('git', 'project_list')) :
+            false;
 
         $this->register(new GitServiceProvider(), array(
-            'git.client'         => $config->get('git', 'client'),
-            'git.repos'          => $repositories,
-            'ini.file'           => "config.ini",
-            'git.hidden'         => $config->get('git', 'hidden') ?
-                                    $config->get('git', 'hidden') : array(),
+            'git.client' => $config->get('git', 'client'),
+            'git.repos' => $repositories,
+            'ini.file' => "config.ini",
+            'git.hidden' => $config->get('git', 'hidden') ?
+                $config->get('git', 'hidden') : array(),
             'git.default_branch' => $config->get('git', 'default_branch') ?
-                                    $config->get('git', 'default_branch') : 'master',
+                $config->get('git', 'default_branch') : 'master',
         ));
 
         $this->register(new ViewUtilServiceProvider());
@@ -82,7 +80,7 @@ class Application extends SilexApplication
             return $twig;
         });
 
-        $this['escaper.argument'] = function() {
+        $this['escaper.argument'] = function () {
             return new Escaper\ArgumentEscaper();
         };
 
@@ -105,21 +103,18 @@ class Application extends SilexApplication
         });
     }
 
-    public function formatDate($date)
-    {
+    public function formatDate($date) {
         return $date->format($this['date.format']);
     }
 
-    public function formatSize($size)
-    {
+    public function formatSize($size) {
         $mod = 1000;
         $units = array('B', 'kB', 'MB', 'GB');
-        for($i = 0; $size > $mod; $i++) $size /= $mod;
+        for ($i = 0; $size > $mod; $i++) $size /= $mod;
         return round($size, 2) . $units[$i];
     }
 
-    public function getAvatar($email, $size)
-    {
+    public function getAvatar($email, $size) {
         $url = $this['avatar.url'] ? $this['avatar.url'] : "//gravatar.com/avatar/";
         $query = array("s=$size");
         if (is_string($this['avatar.query']))
@@ -130,28 +125,24 @@ class Application extends SilexApplication
         return $url . $id . "?" . implode('&', $query);
     }
 
-    public function getPath()
-    {
+    public function getPath() {
         return $this->path . DIRECTORY_SEPARATOR;
     }
 
-    public function setPath($path)
-    {
+    public function setPath($path) {
         $this->path = $path;
 
         return $this;
     }
 
-    public function getCachePath()
-    {
+    public function getCachePath() {
         return $this->path
             . DIRECTORY_SEPARATOR
             . 'cache'
             . DIRECTORY_SEPARATOR;
     }
 
-    public function parseProjectList($project_list)
-    {
+    public function parseProjectList($project_list) {
         $projects = array();
         $file = fopen($project_list, "r");
         while ($file && !feof($file))

@@ -7,10 +7,8 @@ use Silex\Api\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
-class TreeController implements ControllerProviderInterface
-{
-    public function connect(Application $app)
-    {
+class TreeController implements ControllerProviderInterface {
+    public function connect(Application $app) {
         $route = $app['controllers_factory'];
 
         $route->get('{repo}/tree/{commitishPath}', $treeController = function ($repo, $commitishPath = '') use ($app) {
@@ -69,11 +67,11 @@ class TreeController implements ControllerProviderInterface
                 'query'          => $query
             ));
         })->assert('repo', $app['util.routing']->getRepositoryRegex())
-          ->assert('branch', $app['util.routing']->getBranchRegex())
-          ->convert('branch', 'escaper.argument:escape')
-          ->bind('search');
+            ->assert('branch', $app['util.routing']->getBranchRegex())
+            ->convert('branch', 'escaper.argument:escape')
+            ->bind('search');
 
-        $route->get('{repo}/{format}ball/{branch}', function($repo, $format, $branch) use ($app) {
+        $route->get('{repo}/{format}ball/{branch}', function ($repo, $format, $branch) use ($app) {
             $repository = $app['git']->getRepositoryFromName($app['git.repos'], $repo);
 
             $tree = $repository->getBranchTree($branch);
@@ -83,11 +81,11 @@ class TreeController implements ControllerProviderInterface
             }
 
             $file = $app['cache.archives'] . DIRECTORY_SEPARATOR
-                    . $repo . DIRECTORY_SEPARATOR
-                    . substr($tree, 0, 2) . DIRECTORY_SEPARATOR
-                    . substr($tree, 2)
-                    . '.'
-                    . $format;
+                . $repo . DIRECTORY_SEPARATOR
+                . substr($tree, 0, 2) . DIRECTORY_SEPARATOR
+                . substr($tree, 2)
+                . '.'
+                . $format;
 
             if (!file_exists($file)) {
                 $repository->createArchive($tree, $file, $format);
@@ -97,7 +95,7 @@ class TreeController implements ControllerProviderInterface
              * Generating name for downloading, lowercasing and removing all non
              * ascii and special characters
              */
-            $filename = strtolower($repo.'_'.$branch);
+            $filename = strtolower($repo . '_' . $branch);
             $filename = preg_replace('#[^a-z0-9]+#', '_', $filename);
             $filename = $filename . '.' . $format;
 
@@ -111,14 +109,14 @@ class TreeController implements ControllerProviderInterface
           ->bind('archive');
 
 
-        $route->get('{repo}/{branch}', function($repo, $branch) use ($app, $treeController) {
+        $route->get('{repo}/{branch}', function ($repo, $branch) use ($app, $treeController) {
             return $treeController($repo, $branch);
         })->assert('repo', $app['util.routing']->getRepositoryRegex())
           ->assert('branch', $app['util.routing']->getBranchRegex())
           ->convert('branch', 'escaper.argument:escape')
           ->bind('branch');
 
-        $route->get('{repo}', function($repo) use ($app, $treeController) {
+        $route->get('{repo}', function ($repo) use ($app, $treeController) {
             return $treeController($repo);
         })->assert('repo', $app['util.routing']->getRepositoryRegex())
           ->bind('repository');

@@ -7,27 +7,25 @@ use Silex\Api\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
-class MainController implements ControllerProviderInterface
-{
-    public function connect(Application $app)
-    {
+class MainController implements ControllerProviderInterface {
+    public function connect(Application $app) {
         $route = $app['controllers_factory'];
 
-        $route->get('/', function() use ($app) {
+        $route->get('/', function () use ($app) {
             $repositories = $app['git']->getRepositories($app['git.repos']);
 
             return $app['twig']->render('index.twig', array(
-                'repositories'   => $repositories,
+                'repositories' => $repositories,
             ));
         })->bind('homepage');
 
 
-        $route->get('/refresh', function(Request $request) use ($app ) {
+        $route->get('/refresh', function (Request $request) use ($app) {
             # Go back to calling page
             return $app->redirect($request->headers->get('Referer'));
         })->bind('refresh');
 
-        $route->get('{repo}/stats/{branch}', function($repo, $branch) use ($app) {
+        $route->get('{repo}/stats/{branch}', function ($repo, $branch) use ($app) {
             $repository = $app['git']->getRepositoryFromName($app['git.repos'], $repo);
 
             if ($branch === null) {

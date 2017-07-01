@@ -6,10 +6,8 @@ use Silex\Application;
 use Silex\Api\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class CommitController implements ControllerProviderInterface
-{
-    public function connect(Application $app)
-    {
+class CommitController implements ControllerProviderInterface {
+    public function connect(Application $app) {
         $route = $app['controllers_factory'];
 
         $route->get('{repo}/commits/search', function (Request $request, $repo) use ($app) {

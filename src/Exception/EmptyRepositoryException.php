@@ -2,7 +2,6 @@
 
 namespace GitList\Exception;
 
-class EmptyRepositoryException extends \RuntimeException
-{
-    
+class EmptyRepositoryException extends \RuntimeException {
+
 }

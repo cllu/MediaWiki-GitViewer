@@ -6,10 +6,8 @@ use Silex\Application;
 use Silex\Api\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Response;
 
-class BlobController implements ControllerProviderInterface
-{
-    public function connect(Application $app)
-    {
+class BlobController implements ControllerProviderInterface {
+    public function connect(Application $app) {
         $route = $app['controllers_factory'];
 
         $route->get('{repo}/blob/{commitishPath}', function ($repo, $commitishPath) use ($app) {
@@ -26,7 +24,7 @@ class BlobController implements ControllerProviderInterface
 
             if ($fileType !== 'image' && $app['util.repository']->isBinary($file)) {
                 return $app->redirect($app['url_generator']->generate('blob_raw', array(
-                    'repo'   => $repo,
+                    'repo' => $repo,
                     'commitishPath' => $commitishPath,
                 )));
             }
@@ -58,7 +56,7 @@ class BlobController implements ControllerProviderInterface
 
             $headers = array();
             if ($app['util.repository']->isBinary($file)) {
-                $headers['Content-Disposition'] = 'attachment; filename="' .  $file . '"';
+                $headers['Content-Disposition'] = 'attachment; filename="' . $file . '"';
                 $headers['Content-Type'] = 'application/octet-stream';
             } else {
                 $headers['Content-Type'] = 'text/plain';

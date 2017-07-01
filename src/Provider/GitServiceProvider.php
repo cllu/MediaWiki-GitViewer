@@ -7,8 +7,7 @@ use Pimple\Container;
 use Silex\Application;
 use Pimple\ServiceProviderInterface;
 
-class GitServiceProvider implements ServiceProviderInterface
-{
+class GitServiceProvider implements ServiceProviderInterface {
 
     /**
      * Register the Git\Client on the Application ServiceProvider
@@ -16,8 +15,7 @@ class GitServiceProvider implements ServiceProviderInterface
      * @param  Container $app Application
      * @return Git\Client  Instance of the Git\Client
      */
-    public function register(Container $app)
-    {
+    public function register(Container $app) {
         $app['git'] = function () use ($app) {
             $options['path'] = $app['git.client'];
             $options['hidden'] = $app['git.hidden'];
@@ -29,7 +27,6 @@ class GitServiceProvider implements ServiceProviderInterface
         };
     }
 
-    public function boot(Application $app)
-    {
+    public function boot(Application $app) {
     }
 }

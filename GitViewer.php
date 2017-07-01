@@ -11,7 +11,7 @@ class GitViewerPage extends ErrorPageError {
     public $url;
     public $gitViewer;
 
-    public function __construct($url, $prefix='/~') {
+    public function __construct($url, $prefix = '/~') {
         $this->url = $url;
 
         $config = GitList\Config::fromFile(__DIR__ . '/config.ini');

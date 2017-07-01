@@ -4,8 +4,7 @@ namespace GitList\Util;
 
 use Silex\Application;
 
-class Repository
-{
+class Repository {
     protected $app;
 
     protected $defaultFileTypes = array(
@@ -103,8 +102,7 @@ class Repository
         'odt', 'ods', 'pdf', 'doc', 'docx', 'dot', 'xls', 'xlsx',
     );
 
-    public function __construct(Application $app)
-    {
+    public function __construct(Application $app) {
         $this->app = $app;
     }
 
@@ -117,8 +115,7 @@ class Repository
      * @param  string $file File name
      * @return mixed  File type
      */
-    public function getFileType($file)
-    {
+    public function getFileType($file) {
         if (($pos = strrpos($file, '.')) !== false) {
             $fileType = substr($file, $pos + 1);
         } else {
@@ -145,8 +142,7 @@ class Repository
      *
      * @return boolean
      */
-    public function isBinary($file)
-    {
+    public function isBinary($file) {
         if (($pos = strrpos($file, '.')) !== false) {
             $fileType = substr($file, $pos + 1);
         } else {
@@ -164,10 +160,9 @@ class Repository
         return false;
     }
 
-    public function getReadme($repository, $branch = null, $path = "")
-    {
+    public function getReadme($repository, $branch = null, $path = "") {
         if ($branch === null) {
-           $branch = $repository->getHead();
+            $branch = $repository->getHead();
         }
 
         if ($path != "") $path = "$path/";
@@ -178,12 +173,12 @@ class Repository
             if (preg_match('/^readme*/i', $file['name'])) {
                 return array(
                     'filename' => $file['name'],
-                    'content'  => $repository->getBlob("$branch:\"$path{$file['name']}\"")->output()
+                    'content' => $repository->getBlob("$branch:\"$path{$file['name']}\"")->output()
                 );
             }
         }
-		// No contextual readme, try to catch the main one if we are in deeper context
-		if ($path != "") return $this->getReadme($repository, $branch, "");
+        // No contextual readme, try to catch the main one if we are in deeper context
+        if ($path != "") return $this->getReadme($repository, $branch, "");
         return array();
     }
 
@@ -191,12 +186,11 @@ class Repository
      * Returns an Array where the first value is the tree-ish and the second is the path
      *
      * @param  \GitList\Git\Repository $repository
-     * @param  string                  $branch
-     * @param  string                  $tree
+     * @param  string $branch
+     * @param  string $tree
      * @return array
      */
-    public function extractRef($repository, $branch = '', $tree = '')
-    {
+    public function extractRef($repository, $branch = '', $tree = '') {
         $branch = trim($branch, '/');
         $tree = trim($tree, '/');
         $input = $branch . '/' . $tree;
@@ -206,7 +200,7 @@ class Repository
             $branch = $matches[1];
         } else {
             // Otherwise, attempt to detect the ref using a list of the project's branches and tags
-            $validRefs = array_merge((array) $repository->getBranches(), (array) $repository->getTags());
+            $validRefs = array_merge((array)$repository->getBranches(), (array)$repository->getTags());
             foreach ($validRefs as $key => $ref) {
                 if (!preg_match(sprintf("#^%s/#", preg_quote($ref, '#')), $input)) {
                     unset($validRefs[$key]);

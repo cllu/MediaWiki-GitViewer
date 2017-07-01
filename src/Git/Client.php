@@ -4,22 +4,19 @@ namespace GitList\Git;
 
 use Gitter\Client as BaseClient;
 
-class Client extends BaseClient
-{
+class Client extends BaseClient {
     protected $defaultBranch;
     protected $hidden;
     protected $projects;
 
-    public function __construct($options = null)
-    {
+    public function __construct($options = null) {
         parent::__construct($options['path']);
         $this->setDefaultBranch($options['default_branch']);
         $this->setHidden($options['hidden']);
         $this->setProjects($options['projects']);
     }
 
-    public function getRepositoryFromName($paths, $repo)
-    {
+    public function getRepositoryFromName($paths, $repo) {
         $repositories = $this->getRepositories($paths);
         $path = $repositories[$repo]['path'];
 
@@ -33,8 +30,7 @@ class Client extends BaseClient
      * @return array Found repositories, containing their name, path and description sorted
      *               by repository name
      */
-    public function getRepositories($paths)
-    {
+    public function getRepositories($paths) {
         $allRepositories = array();
 
         foreach ($paths as $path) {
@@ -51,15 +47,14 @@ class Client extends BaseClient
         }
 
         $allRepositories = array_unique($allRepositories, SORT_REGULAR);
-        uksort($allRepositories, function($k1, $k2) {
-            return strtolower($k2)<strtolower($k1);
+        uksort($allRepositories, function ($k1, $k2) {
+            return strtolower($k2) < strtolower($k1);
         });
 
         return $allRepositories;
     }
 
-    private function recurseDirectory($path, $topLevel = true)
-    {
+    private function recurseDirectory($path, $topLevel = true) {
         $dir = new \DirectoryIterator($path);
 
         $repositories = array();
@@ -130,8 +125,7 @@ class Client extends BaseClient
      * @param string $branch Name of branch to use when repo's HEAD is detached.
      * @return object
      */
-    protected function setDefaultBranch($branch)
-    {
+    protected function setDefaultBranch($branch) {
         $this->defaultBranch = $branch;
 
         return $this;
@@ -140,8 +134,7 @@ class Client extends BaseClient
     /**
      * Return name of default branch as a string.
      */
-    public function getDefaultBranch()
-    {
+    public function getDefaultBranch() {
         return $this->defaultBranch;
     }
 
@@ -150,8 +143,7 @@ class Client extends BaseClient
      *
      * @return array List of repositories to hide
      */
-    protected function getHidden()
-    {
+    protected function getHidden() {
         return $this->hidden;
     }
 
@@ -161,8 +153,7 @@ class Client extends BaseClient
      * @param array $hidden List of repositories to hide
      * @return object
      */
-    protected function setHidden($hidden)
-    {
+    protected function setHidden($hidden) {
         $this->hidden = $hidden;
 
         return $this;
@@ -173,8 +164,7 @@ class Client extends BaseClient
      *
      * @return array List of repositories to show
      */
-    protected function getProjects()
-    {
+    protected function getProjects() {
         return $this->projects;
     }
 
@@ -183,8 +173,7 @@ class Client extends BaseClient
      *
      * @param array $projects List of repositories to show
      */
-    protected function setProjects($projects)
-    {
+    protected function setProjects($projects) {
         $this->projects = $projects;
 
         return $this;
@@ -192,11 +181,10 @@ class Client extends BaseClient
 
     /**
      * Overloads the parent::createRepository method for the correct Repository class instance
-     * 
+     *
      * {@inheritdoc}
      */
-    public function createRepository($path, $bare = null)
-    {
+    public function createRepository($path, $bare = null) {
         if (file_exists($path . '/.git/HEAD') && !file_exists($path . '/HEAD')) {
             throw new \RuntimeException('A GIT repository already exists at ' . $path);
         }
@@ -208,11 +196,10 @@ class Client extends BaseClient
 
     /**
      * Overloads the parent::getRepository method for the correct Repository class instance
-     * 
+     *
      * {@inheritdoc}
      */
-    public function getRepository($path)
-    {
+    public function getRepository($path) {
         if (!file_exists($path) || !file_exists($path . '/.git/HEAD') && !file_exists($path . '/HEAD')) {
             throw new \RuntimeException('There is no GIT repository at ' . $path);
         }
