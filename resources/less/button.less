@@ -1,0 +1,77 @@
+.gitviewer {
+
+  .BtnGroup {
+    display: inline-block;
+    vertical-align: middle;
+  }
+  button, html [type="button"], [type="reset"], [type="submit"] {
+    -webkit-appearance: button;
+  }
+
+  .btn-outline {
+    color: rgb(3, 102, 214);
+    background-color: rgb(255, 255, 255);
+    background-image: none;
+  }
+
+  .btn {
+    position: relative;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    user-select: none;
+    background-size: 110% 110%;
+    -webkit-appearance: none;
+    padding: 6px 12px;
+    background-repeat: repeat-x;
+    background-position: -1px -1px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgba(27, 31, 35, 0.2);
+    border-image: initial;
+    border-radius: 0.25em;
+  }
+
+  .BtnGroup-item:first-child {
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+  }
+
+  .BtnGroup-item {
+    position: relative;
+    float: left;
+    border-right-width: 0px;
+    border-radius: 0px;
+  }
+
+  .BtnGroup::before {
+    display: table;
+    content: "";
+  }
+
+  .BtnGroup::after {
+    display: table;
+    clear: both;
+    content: "";
+  }
+  .BtnGroup-item:last-child {
+    border-right-width: 1px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+  }
+
+  .btn .octicon {
+    vertical-align: text-top;
+  }
+
+  .btn-outline:hover, .btn-outline:active, .btn-outline.selected {
+    color: rgb(255, 255, 255);
+    background-color: rgb(3, 102, 214);
+    background-image: none;
+    border-color: rgb(3, 102, 214);
+  }
+}
