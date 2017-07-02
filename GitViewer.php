@@ -17,12 +17,12 @@ class GitViewerPage extends ErrorPageError {
         $config = GitList\Config::fromFile(__DIR__ . '/config.ini');
         $gitViewer = new GitList\Application($config, __DIR__);
         // Mount the controllers
+        $gitViewer->mount($prefix, new GitList\Controller\TreeGraphController());
+        $gitViewer->mount($prefix, new GitList\Controller\NetworkController());
         $gitViewer->mount($prefix, new GitList\Controller\MainController());
         $gitViewer->mount($prefix, new GitList\Controller\BlobController());
         $gitViewer->mount($prefix, new GitList\Controller\CommitController());
         $gitViewer->mount($prefix, new GitList\Controller\TreeController());
-        $gitViewer->mount($prefix, new GitList\Controller\NetworkController());
-        $gitViewer->mount($prefix, new GitList\Controller\TreeGraphController());
 
         if (!is_writable(__DIR__ . DIRECTORY_SEPARATOR . 'cache')) {
             die(sprintf('The "%s" folder must be writable for GitList to run.', __DIR__ . DIRECTORY_SEPARATOR . 'cache'));
@@ -37,12 +37,15 @@ class GitViewerPage extends ErrorPageError {
         $request = SymfonyRequest::create($this->url);
         $response = $this->gitViewer->handle($request);
 
-        $wgOut->addModules('ext.GitViewer');
-        $wgOut->addHeadItem('FontAwesome', '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />');
-        $wgOut->addHeadItem('Bootstrap', '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.0/css/bootstrap.min.css" />');
-        $wgOut->setPageTitle("GitViewer");
-        $wgOut->addHTML($response->getContent());
-        $wgOut->output();
+        if (substr($this->url, -5) == '.json') {
+            echo $response->getContent();
+        } else {
+            $wgOut->addModules('ext.GitViewer');
+            $wgOut->addHeadItem('FontAwesome', '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />');
+            $wgOut->setPageTitle("GitViewer");
+            $wgOut->addHTML($response->getContent());
+            $wgOut->output();
+        }
     }
 }
 

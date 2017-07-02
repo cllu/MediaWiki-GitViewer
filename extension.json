@@ -14,7 +14,8 @@
   },
   "load_composer_autoloader": true,
   "AutoloadClasses": {
-    "GitViewer": "GitViewer.php"
+    "GitViewer": "GitViewer.php",
+    "GitList\\Config": "src/Config.php"
   },
   "ResourceModules": {
     "ext.GitViewer": {
@@ -27,7 +28,7 @@
         "resources/scripts/raphael.js",
         "resources/scripts/showdown.js",
         "resources/scripts/table.js",
-        "resources/scripts/bootstrap.js",
+        "resources/scripts/dropdown.js",
         "resources/scripts/main.js"
       ],
       "styles": [
