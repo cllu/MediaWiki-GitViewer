@@ -21,8 +21,8 @@
     "ext.GitViewer": {
       "scripts": [
         "resources/scripts/codemirror.js",
-        "resources/scripts/draw.js",
         "resources/scripts/gitgraph.js",
+        "resources/scripts/draw.js",
         "resources/scripts/networkGraph.js",
         "resources/scripts/eve.js",
         "resources/scripts/raphael.js",

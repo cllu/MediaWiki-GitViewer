@@ -1,17 +1,19 @@
-$(document).ready(function () {
+( function ($) {
+  jQuery(document).ready(function () {
     var graphList = [];
 
     if (!document.getElementById('graph-canvas')) {
-        return;
+      return;
     }
 
-    $("#graph-raw-list li span.node-relation").each(function () {
-        graphList.push($(this).text());
-    })
+    $("#graph-raw-list").find("li span.node-relation").each(function () {
+      graphList.push($(this).text());
+    });
 
     gitGraph(document.getElementById('graph-canvas'), graphList);
 
     if ($("#rev-container")) {
-        $("#rev-container").css("width", $('#git-graph-container').width() - $('#graph-canvas').width());
+      $("#rev-container").css("width", $('#git-graph-container').width() - $('#graph-canvas').width());
     }
-})
+  })
+}(jQuery) );
