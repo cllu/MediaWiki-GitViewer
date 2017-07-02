@@ -36,8 +36,11 @@
 
     {% for diff in commit.diffs %}
     <div class="source-view">
-        <div class="source-header">
-            <div class="meta"><a id="diff-{{ loop.index }}">{{ diff.file }}</div>
+        <div class="file-header">
+            <div class="file-info">
+                <span class="diffstat">{{ diff.getLines|length }}</span>
+                <a id="diff-{{ loop.index }}">{{ diff.file }}</a>
+            </div>
 
             <div class="btn-group pull-right">
                 <a href="{{ path('commits', {repo: repo, commitishPath: commit.hash ~ '/' ~ diff.file}) }}"  class="btn btn-default btn-sm"><span class="fa fa-list-alt"></span> History</a>
@@ -48,8 +51,8 @@
         <div class="source-diff">
         <table>
         {% for line in diff.getLines %}
-            <tr>
-                <td class="lineNo">
+            <tr class="{% if line.getType %}{{ line.getType }}{% endif %} ">
+                <td class="blob-num">
                     {% if line.getType != 'chunk' %}
                         <a name="L{{ loop.index }}R{{ line.getNumOld }}"></a>
                         <a href="#L{{ loop.index }}R{{ line.getNumOld }}">
@@ -59,7 +62,7 @@
                         </a>
                     {% endif %}
                 </td>
-                <td class="lineNo">
+                <td class="blob-num">
                     {% if line.getType != 'chunk' %}
                         <a name="L{{ loop.index }}L{{ line.getNumNew }}"></a>
                         <a href="#L{{ loop.index }}L{{ line.getNumNew }}">
@@ -69,8 +72,8 @@
                         </a>
                     {% endif %}
                 </td>
-                <td style="width: 100%">
-                    <pre{% if line.getType %} class="{{ line.getType }}"{% endif %}>{{ line.getLine }}</pre>
+                <td style="width: 100%" class="blob-code">
+                    <pre>{{ line.getLine }}</pre>
                 </td>
             </tr>
         {% endfor %}
