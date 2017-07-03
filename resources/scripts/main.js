@@ -1,10 +1,11 @@
 $(function () {
     $('.dropdown-toggle').dropdown();
 
-    if ($('#sourcecode').length) {
-        var value = $('#sourcecode').text();
-        var mode = $('#sourcecode').attr('language');
-        var pre = $('#sourcecode').get(0);
+    let $source = $('#sourcecode');
+    if ($source.length) {
+        var value = $source.text();
+        var mode = $source.attr('language');
+        var pre = $source.get(0);
         var viewer = CodeMirror(function(elt) {
             pre.parentNode.replaceChild(elt, pre);
         }, {
