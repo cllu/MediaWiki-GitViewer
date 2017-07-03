@@ -54,6 +54,11 @@ class GitViewer {
      * If a page title starts with git, that is a signal for us to take over control
      */
     public static function onBeforeInitialize(&$title, &$article, &$output, &$user, $request, $mediaWiki) {
+        global $wgUser;
+        // only allow sysop users to access the git pages
+        if (!in_array('sysop', $wgUser->getGroups())) {
+            return false;
+        }
         $url = $request->getRequestURL();
         if ((substr($url, 0, 3)) === "/~/") {
             throw new GitViewerPage($url);
