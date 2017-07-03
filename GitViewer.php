@@ -37,14 +37,15 @@ class GitViewerPage extends ErrorPageError {
         $request = SymfonyRequest::create($this->url);
         $response = $this->gitViewer->handle($request);
 
-        if (substr($this->url, -5) == '.json') {
-            echo $response->getContent();
-        } else {
+        $contentType = $response->headers->get("content-type");
+        if ('text/html; charset=UTF-8' === $contentType) {
             $wgOut->addModules('ext.GitViewer');
             $wgOut->addHeadItem('FontAwesome', '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />');
             $wgOut->setPageTitle("GitViewer");
             $wgOut->addHTML($response->getContent());
             $wgOut->output();
+        } else {
+            echo $response->getContent();
         }
     }
 }

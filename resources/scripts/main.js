@@ -3,10 +3,10 @@ $(function () {
 
     let $source = $('#sourcecode');
     if ($source.length) {
-        var value = $source.text();
-        var mode = $source.attr('language');
-        var pre = $source.get(0);
-        var viewer = CodeMirror(function(elt) {
+        let value = $source.text();
+        let mode = $source.attr('language');
+        let pre = $source.get(0);
+        let viewer = CodeMirror(function(elt) {
             pre.parentNode.replaceChild(elt, pre);
         }, {
             value: value,
@@ -22,17 +22,19 @@ $(function () {
     }
 
     if ($('#md-content').length) {
-        var converter = new Showdown.converter({extensions: ['table']});
+      console.log('md-content');
+        //let converter = new Showdown.converter({extensions: ['table']});
+        let converter = new Showdown.converter();
         $('#md-content').html(converter.makeHtml($('#md-content').text()));
     }
 
-    var clonePopup = $('#clone-popup')
-    var cloneButtonShow = $('#clone-button-show');
-    var cloneButtonHide = $('#clone-button-hide');
-    var cloneButtonSSH = $('#clone-button-ssh');
-    var cloneButtonHTTP = $('#clone-button-http');
-    var cloneInputSSH = $('#clone-input-ssh');
-    var cloneInputHTTP = $('#clone-input-http');
+    let clonePopup = $('#clone-popup');
+    let cloneButtonShow = $('#clone-button-show');
+    let cloneButtonHide = $('#clone-button-hide');
+    let cloneButtonSSH = $('#clone-button-ssh');
+    let cloneButtonHTTP = $('#clone-button-http');
+    let cloneInputSSH = $('#clone-input-ssh');
+    let cloneInputHTTP = $('#clone-input-http');
 
     cloneButtonShow.click(function()
     {
